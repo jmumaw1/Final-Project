@@ -1,0 +1,15 @@
+WIDTH, HEIGHT = 1200, 600
+FPS = 60
+GRAVITY = 0.5
+PLAYER_SPEED_X = 5
+JUMP_HEIGHT = 12
+TIMER_START = 99  # Starting time in seconds
+PROJECTILE_SPEED = 8
+
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+
+s_t = 32
