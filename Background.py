@@ -24,24 +24,25 @@ def draw_background(screen):
             screen.blit(sky, (x, y))
 
     for x in range(0, WIDTH, s_t):
-        screen.blit(water, (x, HEIGHT-s_t))
+        for y in range(300, HEIGHT, s_t):
+            screen.blit(water, (x, y))
 
     for x in range(0, WIDTH, s_t):
-        screen.blit(mid, (x, HEIGHT/2))
+        screen.blit(mid, (x, 250))
 
     for _ in range(4):
         x = random.randint(0, WIDTH)
         screen.blit(lg_r, (x, HEIGHT - 50))
 
-    for _ in range (3):
+    for _ in range(3):
         x = random.randint(0, WIDTH)
         screen.blit(md_r, (x, HEIGHT - 125))
 
-    for i in range (5):
+    for i in range(5):
         x = random.randint(0, WIDTH)
         screen.blit(sm_r, (x, HEIGHT - 225))
 
-    for i in range (7):
+    for i in range(7):
         x = random.randint(0, WIDTH)
         screen.blit(s_c, (x, HEIGHT - 450))
 

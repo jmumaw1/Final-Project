@@ -4,6 +4,7 @@ import math
 from Parameters import *
 from Player import *
 from PROJECTILES import *
+from Background import *
 
 pygame.init()
 
@@ -11,10 +12,21 @@ pygame.init()
 timer_value = TIMER_START * FPS  # Convert seconds to frames
 font = pygame.font.Font(None, 36)
 
+# Platform properties
+platforms = [
+    pygame.Rect(0, HEIGHT - 20, WIDTH, 20),
+    pygame.Rect(WIDTH // 4, HEIGHT // 1.5, WIDTH // 2, 10),
+    pygame.Rect(WIDTH // 2, HEIGHT // 2, WIDTH // 4, 10),
+    pygame.Rect(WIDTH // 8, HEIGHT // 3, WIDTH // 4, 10)
+]
+
 # Initialize Pygame window
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Gravity, Movement, Jumping, Timer, and Shooting in Pygame")
+pygame.display.set_caption("Background")
 clock = pygame.time.Clock()
+background = screen.copy()
+draw_background(background)
+player = Player(50, HEIGHT-player_size)
 
 # Game loop
 while True:
@@ -32,14 +44,13 @@ while True:
             elif event.button == 3:  # Right mouse button
                 projectiles.append(Projectile(player_x, player_y, angle, GREEN))
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_SPACE] and not is_jumping and player_y == HEIGHT - player_size:  # Jump if on the ground
-        player_speed_y = -JUMP_HEIGHT
-        is_jumping = True
+        if event.type == pygame.KEYUP:
+            player.stop()
 
-    # Apply gravity
-    player_speed_y += GRAVITY
-    player_y += player_speed_y
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        player.jump()
+
 
     # Check if player is on the ground
     if player_y >= HEIGHT - player_size:
@@ -48,9 +59,12 @@ while True:
 
     # Move player horizontally
     if keys[pygame.K_a]:
-        player_x -= PLAYER_SPEED_X
+        player.move_left()
     if keys[pygame.K_d]:
-        player_x += PLAYER_SPEED_X
+        player.move_right()
+
+    player_speed_y += GRAVITY
+    player_y += player_speed_y
 
     # Keep player within screen bounds horizontally
     player_x = min(max(player_x, 0), WIDTH - player_size)
@@ -62,11 +76,14 @@ while True:
     for projectile in projectiles:
         projectile.move()
 
-    # Clear the screen
-    screen.fill(WHITE)
+    # Checking for collision with platforms
+    for platform in platforms:
+        if pygame.Rect(player_x, player_y, player_size, player_size).colliderect(platform):
+            player_speed_y = 0
+            player_y = platform.y - player_size
 
-    # Draw the player
-    pygame.draw.rect(screen, BLUE, (player_x, int(player_y), player_size, player_size))
+    # Bliting the background
+    screen.blit(background, (0, 0))
 
     # Draw the timer in the top right corner
     timer_text = font.render(str(timer_value // FPS), True, BLACK)
@@ -75,6 +92,15 @@ while True:
     # Draw projectiles
     for projectile in projectiles:
         pygame.draw.circle(screen, projectile.color, (int(projectile.x), int(projectile.y)), 5)
+
+    # Draw platforms
+    for platform in platforms:
+        pygame.draw.rect(screen, GRAY, platform)
+
+    player.update()
+
+    # draw the player
+    player.draw(screen)
 
     # Update the display
     pygame.display.flip()
