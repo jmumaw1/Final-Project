@@ -6,3 +6,10 @@ the goal is to get as many points in the total time
 'D' is to move right
 'Space' is to jump
 'left click' is to shoot your projectiles
+
+
+
+Sources:
+[1]“Search results for ‘sprites,’” itch.io. https://itch.io/search?q=sprites (accessed Dec. 07, 2023).
+‌[1]OpenAI, “ChatGPT,” chat.openai.com, 2023. https://chat.openai.com
+‌
